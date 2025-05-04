@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners -->
+  <meta name="description" content="Improving object state representation in text-to-image generative models through a fully automatic synthetic data pipeline and finetuning." />
+  <meta property="og:title" content="Improving Physical Object State Representation in Text-to-Image Generative Systems"/>
+  <meta property="og:description" content="Synthetic data pipeline and finetuned models deliver significant gains on GenAI-Object-State and Object State Bench benchmarks."/>
+  <meta property="og:url" content="https://github.com/cskyl/Object-State-Bench" />
+  <meta property="og:image" content="static/images/banner.png" />
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+
+  <meta name="twitter:title" content="Improving Physical Object State Representation" />
+  <meta name="twitter:description" content="A data-centric approach to teach generative models object absence and empty states via synthetic pipelines." />
+  <meta name="twitter:image" content="static/images/twitter_banner.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="keywords" content="text-to-image, synthetic data, diffusion, object state, CVPR Workshop" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Improving Physical Object State Representation in Text-to-Image Generative Systems</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+</head>
+<body>
+
+  <!-- Hero section -->
+  <section class="hero is-primary is-bold">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <h1 class="title is-1">Improving Physical Object State Representation in Text-to-Image Generative Systems</h1>
+        <h2 class="subtitle is-4">
+          Tianle Chen<sup>1</sup>, Chaitanya Chakka<sup>1</sup>, Deepti Ghadiyaram<sup>1,2</sup>
+        </h2>
+        <p class="is-size-5">    
+          <sup>1</sup>Boston University&nbsp;&nbsp;<sup>2</sup>Runway
+        </p>
+        <div class="buttons is-centered mt-4">
+          <a href="static/Improving_Physical_Object_State_Representation_in_Text_to_Image_Generative_Systems.pdf" class="button is-dark is-rounded">
+            <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper</span>
+          </a>
+          <a href="https://github.com/cskyl/Object-State-Bench" class="button is-dark is-rounded">
+            <span class="icon"><i class="fab fa-github"></i></span><span>Code & Data</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Abstract -->
+  <section class="section">
+    <div class="container">
+      <h2 class="title is-3">Abstract</h2>
+      <div class="content">
+        <p>
+          Current text-to-image generative models struggle to accurately represent object states (e.g., “a table without a bottle,” “an empty tumbler”). We design a fully automatic pipeline to generate high-quality synthetic data capturing varied object states, and fine-tune open-source text-to-image models on this data. Evaluations on the GenAI-Object-State and Object State Bench benchmarks show an average improvement of 8+% and 24+% respectively over baseline models in GPT and VQA alignment metrics. Resources at <a href="https://github.com/cskyl/Object-State-Bench" target="_blank">GitHub</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teaser image -->
+  <section class="section has-text-centered">
+    <img src="static/Fig1_00.png" alt="Object state improvements" style="max-width:800px; width:90%; height:auto; margin:0 auto; display:block;" />
+    <p class="subtitle is-6 mt-2">Qualitative comparison showing empty and absent object improvements after finetuning.</p>
+  </section>
+
+  <!-- Contributions -->
+  <section class="section">
+    <div class="container">
+      <h2 class="title is-3">Key Contributions</h2>
+      <ul class="content">
+        <li>Fully automatic synthetic data generation pipeline covering diverse object absence and empty configurations.</li>
+        <li>Finetuning of four open-source text-to-image models (e.g., Stable Diffusion 1.5, 2.1, SDXL, and DiT) using LoRA adapters for targeted state representation.</li>
+        <li>Novel Object State Bench: 200 human- and machine-authored prompts to rigorously evaluate physical state representation across contexts.</li>
+        <li>Performance gains of +8.2% (GenAI-Object-State) and +24.6% (Object State Bench) in GPT alignment; +5.2% and +17.2% in VQA-score, demonstrating robust semantic improvements.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Dataset & Benchmarks -->
+  <section class="section">
+    <div class="container">
+      <h2 class="title is-3">Dataset & Benchmarks</h2>
+      <div class="content">
+        <p>The Object State Bench comprises 200 prompts balanced across four categories: <em>Empty-Single</em>, <em>Empty-Group</em>, <em>Absent-Single</em>, and <em>Absent-Group</em>. GenAI-Object-State contains 214 negation prompts focusing on single-object absence.</p>
+        <ul>
+          <li><strong>Empty-Single/Group:</strong> Objects depicted without contents.</li>
+          <li><strong>Absent-Single/Group:</strong> Objects completely removed from scene.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Synthetic Data Pipeline -->
+  <section class="section">
+    <div class="container">
+      <h2 class="title is-3">Synthetic Data Pipeline</h2>
+      <figure class="image">
+        <img src="static/Fig2_00.png" alt="Synthetic Data Pipeline" style="max-width:800px; width:90%; height:auto; margin:0 auto; display:block;" />
+      </figure>
+      <div class="content mt-4">
+        <ol>
+          <li>Prompt templating for diverse object-state scenarios.</li>
+          <li>Image synthesis via multiple T2I backbones (e.g., SD, DiT).</li>
+          <li>Automated filtering and recaptioning with LLM/LVLM for semantic fidelity.</li>
+          <li>LoRA-based finetuning on curated synthetic splits, optimizing state semantics.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experiments & Results -->
+  <section class="section">
+    <div class="container">
+      <h2 class="title is-3">Experiments & Results</h2>
+      <div class="content has-text-justified">
+        <p>Across benchmarks, finetuned models exhibit consistent gains:</p>
+        <ul>
+          <li><strong>GPT Alignment:</strong> +8.2% (GenAI-OS), +24.6% (OS Bench).</li>
+          <li><strong>VQA-Score:</strong> +5.2% (GenAI-OS), +17.2% (OS Bench).</li>
+        </ul>
+        <p>State-wise breakdown reveals larger improvements for <em>Absent-Group</em> scenarios, underscoring the pipeline's efficacy on complex layouts.</p>
+      </div>
+      <figure class="image">
+        <img src="static/Fig3_00.jpg" alt="Results Table" style="max-width:800px; width:90%; height:auto; margin:0 auto; display:block;" />
+      </figure>
+    </div>
+  </section>
+
+   <!-- Quantitative Results as Figures -->
+   <section class="section">
+    <div class="container">
+      <h2 class="title is-3">Additional Experiments Results</h2>
+
+      <h3 class="title is-4">Figure 7: Generator Comparison</h3>
+      <img src="static/Table_generator.jpg" alt="Generator Comparison" style="max-width:800px; width:90%; height:auto; margin:0 auto; display:block;" />
+      <p class="content">
+        Figure 7 shows only modest variations when changing the synthetic data generator, underscoring the robustness of the pipeline across different backbones.
+      </p>
+
+      <h3 class="title is-4">Figure 8: Generalization to Unseen Objects</h3>
+      <img src="static/Table_unseen.jpg" alt="Generalization to Unseen" style="max-width:800px; width:90%; height:auto; margin:0 auto; display:block;" />
+      <p class="content">
+        Fine-tuning improves GPT accuracy from 13% to 20% (+7pp) on 100 unseen objects, indicating strong generalizability beyond the training set, as depicted in Figure 8.
+      </p>
+
+      <h3 class="title is-4">Figure 9: Real-World vs. Synthetic Data</h3>
+      <img src="static/Table_realworld.jpg" alt="Real vs Synthetic" style="max-width:800px; width:90%; height:auto; margin:0 auto; display:block;" />
+      <p class="content">
+        Figure 9 highlights that our synthetic dataset vastly outperforms real-world datasets of similar size, confirming its superior training signal for object-state alignment.
+      </p>
+
+      <h3 class="title is-4">Figure 10: Visual Quality Metrics</h3>
+      <img src="static/Table_visual.jpg" alt="Visual Quality Metrics" style="max-width:800px; width:90%; height:auto; margin:0 auto; display:block;" />
+      <p class="content">
+        Figure 10 shows negligible FID increase and a slight CLIP-Score boost after fine-tuning, demonstrating no degradation in overall visual fidelity.
+      </p>
+    </div>
+  </section>
+
+   <!-- Qualitative Comparisons -->
+  <section class="section has-text-centered">
+    <h2 class="title is-3">Qualitative Comparisons Across Backbones</h2>
+    <div class="columns is-multiline">
+      <div class="column is-half">
+        <h3 class="subtitle is-5">Stable Diffusion 1.5</h3>
+        <img src="static/SD15.jpg" alt="SD1.5 Results" style="max-width:100%; height:auto; margin-bottom:0.5em;" />
+      </div>
+      <div class="column is-half">
+        <h3 class="subtitle is-5">Stable Diffusion 2.1</h3>
+        <img src="static/SD21.jpg" alt="SD2.1 Results" style="max-width:100%; height:auto; margin-bottom:0.5em;" />
+      </div>
+      <div class="column is-half">
+        <h3 class="subtitle is-5">Stable Diffusion XL</h3>
+        <img src="static/SDXL.jpg" alt="SDXL Results" style="max-width:100%; height:auto; margin-bottom:0.5em;" />
+      </div>
+      <div class="column is-half">
+        <h3 class="subtitle is-5">Flux</h3>
+        <img src="static/Flux.jpg" alt="Flux Results" style="max-width:100%; height:auto; margin-bottom:0.5em;" />
+      </div>
+      <div class="column is-half">
+        <h3 class="subtitle is-5">OmniGen</h3>
+        <img src="static/Omnigen.jpg" alt="OmniGen Results" style="max-width:100%; height:auto; margin-bottom:0.5em;" />
+      </div>
+    </div>
+    <div class="content has-text-left" style="max-width:800px; margin:0 auto;">
+      <p>
+        We compare finetuning effects across multiple T2I backbones. SD1.5 retains general structure but struggles with fine-grained removal. SD2.1 shows improved object masking but occasionally hallucinates background artifacts. SDXL delivers the most precise removals, while Flux and OmniGen demonstrate strong performance on group scenarios, highlighting the importance of backbone capacity and training objectives for state representation.
+      </p>
+    </div>
+  </section>
+
+ <!-- Error Cases -->
+ <section class="section has-text-centered">
+    <h2 class="title is-3">Error Cases in Tuning</h2>
+    <div class="columns">
+      <div class="column">
+        <img src="static/little_improvement_00.png" alt="Improvement Imperfections" style="max-width:600px; width:80%; height:auto; margin:0 auto; margin-bottom:0.5em; display:block;" />
+        <p class="subtitle is-6 mt-2">(a) Corrected emptiness with minor artifacts.</p>
+      </div>
+      <div class="column">
+        <img src="static/over_improvement_00.png" alt="Over-Emphasis Failure" style="max-width:600px; width:80%; height:auto; margin:0 auto; margin-bottom:0.5em; display:block;" />
+        <p class="subtitle is-6 mt-2">(b) Overemphasis on emptiness, shifting object depiction.</p>
+      </div>
+    </div>
+    <div class="content has-text-left" style="max-width:700px; margin:0 auto;">
+      <p>
+        Figure 12 of the paper characterizes two failure modes: over-removal that exaggerates emptiness at the cost of context, and under-removal that leaves residual artifacts. Balancing these is crucial for faithful state representation.
+      </p>
+    </div>
+  </section>
+
+  <!-- Future Work -->
+  <section class="section">
+    <div class="container">
+      <h2 class="title is-3">Future Directions</h2>
+      <ul class="content">
+        <li>Incorporate real-world object removals using segmentation-based editing.</li>
+        <li>Extend benchmarks to multi-object interactions and dynamic states (e.g., pouring, slicing).</li>
+        <li>Evaluate transferability to downstream tasks like VQA and robotic perception.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- BibTeX Placeholder -->
+  <section class="section" id="bibtex">
+    <div class="container">
+      <h2 class="title is-3">BibTeX</h2>
+      <pre><code>@inproceedings{
+}
+</code></pre>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+        Built using an Academic Project Page Template. Source available at <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">GitHub</a>.
+      </p>
+      <p>
+        Licensed under <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>.
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
